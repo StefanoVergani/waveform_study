@@ -1,6 +1,7 @@
 import os
 import numpy as np
 import statistics
+import time
 from PyPurityTools import PyPurityTools as ppt
 
 
@@ -43,18 +44,32 @@ class PyPurityFunctions:
     def peak_finder_ave(path_raw,file_ending,polarity):
         peaks = []
         directory = os.fsencode(path_raw)
-        counter = 0
         for file in os.listdir(directory):
+            start_time = time.time()
             filename = os.fsdecode(file)
-            max_list = []
+            peak = 0
             if filename.startswith("Field_5.10.20Vcm_FibreIn_") and filename.endswith(file_ending):
                 waveList, timeList = ppt.getScopeWaveforms(path_raw+filename)
-                for i in range(len(waveList)):
+                max_list = []
+                for i in range(len(waveList)):  
                     if(polarity==1):
                         max_list.append(max(waveList[i]))
                     if(polarity==-1):
                         max_list.append(min(waveList[i]))
                 peak = statistics.mean(max_list)
+                max_list.clear()
+                waveList = None
+                timeList = None
                 peaks.append(peak)    
-             
         return peaks
+    
+    @staticmethod            
+    def specific_file_counter(path_raw,file_ending):
+        peaks = []
+        directory = os.fsencode(path_raw)
+        counter = 0
+        for file in os.listdir(directory):
+            filename = os.fsdecode(file)
+            if filename.startswith("Field_5.10.20Vcm_FibreIn_") and filename.endswith(file_ending):
+                counter = counter+1             
+        return counter
