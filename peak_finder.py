@@ -14,7 +14,9 @@ import os
 import statistics
 
 path_dir: str = r"/unix/dune/purity/2022October14Vacuum/Gold/"
-path_dir_output: str =r"/home/svergani/waveform_study_results/2022_10_31/"
+path_dir_output: str =r"/home/svergani/waveform_study_results/2022_12_05/"
 #the third argument is polarity. It is +1 if the waveform has a positive peak, -1 if negative.
-ppf.peak_finder_ave(path_dir,".ch3.traces",1,path_dir_output,20)
-ppf.peak_finder_ave(path_dir,".ch4.traces",-1,path_dir_output,20)
+#ppf.peak_finder_ave(path_dir,"Field_5.10.20Vcm_FibreIn_",".ch3.traces",1,path_dir_output,20)
+#ppf.peak_finder_ave(path_dir,"Field_5.10.20Vcm_FibreIn_",".ch4.traces",-1,path_dir_output,20)
+ppf.peak_finder_ave(path_dir,"Field_5.10.20Vcm_FibreOut_HVOn",".ch3.traces",1,path_dir_output,1)
+ppf.peak_finder_ave(path_dir,"Field_5.10.20Vcm_FibreOut_HVOn",".ch4.traces",-1,path_dir_output,1)

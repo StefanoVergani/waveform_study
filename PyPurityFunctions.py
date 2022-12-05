@@ -43,14 +43,14 @@ class PyPurityFunctions:
         return mega_average
 
     @staticmethod            
-    def peak_finder_ave(path_raw,file_ending,polarity,path_output,file_size):
+    def peak_finder_ave(path_raw,file_starting,file_ending,polarity,path_output,file_size):
         peaks = []
         counter = 0
         directory = os.fsencode(path_raw)
         for file in os.listdir(directory):
             filename = os.fsdecode(file)
             peak = 0
-            if filename.startswith("Field_5.10.20Vcm_FibreIn_") and filename.endswith(file_ending):
+            if filename.startswith(file_starting) and filename.endswith(file_ending):
                 print(counter)
                 waveList, timeList = ppt.getScopeWaveforms(path_raw+filename)
                 timeList = None
@@ -73,7 +73,7 @@ class PyPurityFunctions:
                     peaks.clear()
                 if counter == file_size and polarity==-1:
                     print("I am now printing file ch4_peaks_"+"{:%Y_%m_%d_%H_%M_%S}".format(datetime.now())+".npy")
-                    with open("/home/svergani/waveform_study_results/2022_10_31/ch4_peaks_"+"{:%Y_%m_%d_%H_%M_%S}".format(datetime.now())+".npy",'wb') as f: pickle.dump(np.array(peaks), f)
+                    with open(path_output+"ch4_peaks_"+"{:%Y_%m_%d_%H_%M_%S}".format(datetime.now())+".npy",'wb') as f: pickle.dump(np.array(peaks), f)
                     counter=0
                     peaks.clear()
         #return peaks
@@ -105,3 +105,20 @@ class PyPurityFunctions:
                     peaks.append(temp[i])
                 temp= None
         return peaks
+    
+    #I open a single waveform
+    @staticmethod
+    def single_waveform_check(path_raw,file_start,file_ending):
+        counter = 0
+        directory = os.fsencode(path_raw)
+        for file in os.listdir(directory):
+            if counter == 0:
+                filename = os.fsdecode(file)
+                if filename.startswith(file_start) and filename.endswith(file_ending):
+                    waveList, timeList = ppt.getScopeWaveforms(path_raw+filename)
+                    counter = counter +1
+                    return waveList
+            if counter != 0:
+                return 0
+            
+                
