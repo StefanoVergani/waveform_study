@@ -120,5 +120,20 @@ class PyPurityFunctions:
                     return waveList
             if counter != 0:
                 return 0
+
+    @staticmethod
+    def waveform_averager(waveform):
+        waveform_average=[]
+        for i in range(len(waveform[0])):
+            ave_temp = []
+            for j in range(len(waveform)):
+                ave_temp.append(waveform[j][i])
+            waveform_average.append(sum(ave_temp)/len(ave_temp))
+            ave_temp = None
+        return waveform_average
+           
+            
+            
+    
             
                 
