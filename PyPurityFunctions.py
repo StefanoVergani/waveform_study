@@ -131,6 +131,24 @@ class PyPurityFunctions:
             waveform_average.append(sum(ave_temp)/len(ave_temp))
             ave_temp = None
         return waveform_average
+    
+    @staticmethod
+    def waveform_averager_steps(waveform,initial,final):
+        waveform_average=[]
+        for i in range(len(waveform[0])):
+            ave_temp = []
+            for j in range(initial,final):
+                ave_temp.append(waveform[j][i])
+            waveform_average.append(sum(ave_temp)/len(ave_temp))
+            ave_temp = None
+        return waveform_average
+    
+    @staticmethod
+    def smoothed_average(waveform,distance):
+        waveform_smoothed=[]
+        for i in range(0,len(waveform),distance):
+            waveform_smoothed.append(sum(waveform[i:i+distance])/distance)
+        return waveform_smoothed
            
             
             
