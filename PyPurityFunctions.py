@@ -106,20 +106,67 @@ class PyPurityFunctions:
                 temp= None
         return peaks
     
-    #I open a single waveform
+    #I open the first waveform in the directory
     @staticmethod
-    def single_waveform_check(path_raw,file_start,file_ending):
+    def first_waveform_check(path_raw,file_start,file_ending):
+        counter = 0
+        directory = os.fsencode(path_raw)
+        for file in sorted(os.listdir(directory)):
+            if counter == 0:
+                filename = os.fsdecode(file)
+                if filename.startswith(file_start) and filename.endswith(file_ending):
+                    print("the file used is ",filename)
+                    waveList, timeList = ppt.getScopeWaveforms(path_raw+filename)
+                    counter = counter +1
+                    return waveList
+            if counter != 0:
+                return 0
+            
+    #return the name of the first file in the directory
+    @staticmethod
+    def first_waveform_name(path_raw,file_start,file_ending):
         counter = 0
         directory = os.fsencode(path_raw)
         for file in os.listdir(directory):
             if counter == 0:
                 filename = os.fsdecode(file)
                 if filename.startswith(file_start) and filename.endswith(file_ending):
-                    waveList, timeList = ppt.getScopeWaveforms(path_raw+filename)
                     counter = counter +1
-                    return waveList
+                    return filename
             if counter != 0:
-                return 0
+                return 0            
+            
+    #I open the last waveform in the directory
+    @staticmethod
+    def waveform_check(path_raw,file_start,file_ending,value):
+        filename_list = []
+        directory = os.fsencode(path_raw)
+        for file in sorted(os.listdir(directory)):
+            filename = os.fsdecode(file)
+            if filename.startswith(file_start) and filename.endswith(file_ending):
+                filename_list.append(filename)
+        if(value==1):
+            filename_chosen = filename_list[len(filename_list)-1]
+        if(value==0):
+            filename_chosen = filename_list[0]
+        print("the file used is ",filename_chosen)
+        waveList, timeList = ppt.getScopeWaveforms(path_raw+filename_chosen)
+        return waveList
+    
+    #return the name of the last file in the directory
+    @staticmethod
+    def waveform_name(path_raw,file_start,file_ending,value):
+        filename_list = []
+        directory = os.fsencode(path_raw)
+        for file in sorted(os.listdir(directory)):
+            filename = os.fsdecode(file)
+            if filename.startswith(file_start) and filename.endswith(file_ending):
+                filename_list.append(filename)
+        if(value==1):
+            filename_chosen = filename_list[len(filename_list)-1]
+        if(value==0):
+            filename_chosen = filename_list[0]
+        return filename_chosen
 
     @staticmethod
     def waveform_averager(waveform):
